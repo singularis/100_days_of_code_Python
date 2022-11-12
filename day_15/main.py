@@ -43,7 +43,7 @@ def money_counter(coffee_type, resources):
         print("Here is ${} dollars in change and cocking your {}".format((money - MENU.get(coffee_type).get("cost")),
                                                                          coffee_type))
         coffee_maker(coffee_type, resources)
-    else:
+    elif money == MENU.get(coffee_type).get("cost"):
         print("Cocking your drink {}".format(coffee_type))
         coffee_maker(coffee_type, resources)
     clear()
