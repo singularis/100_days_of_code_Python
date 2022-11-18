@@ -1,5 +1,8 @@
-from turtle import Screen
 import time
+from turtle import Screen
+from player import Player
+from car_manager import CarManager
+from scoreboard import Scoreboard
 
 screen_width = 600
 screen_height = 600
@@ -18,6 +21,7 @@ screen.listen()
 is_game = True
 
 while is_game:
+    screen.update()
     time.sleep(game_speed)
     pass
 
