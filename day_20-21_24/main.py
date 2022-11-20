@@ -39,12 +39,13 @@ while is_game:
     # Borders collision
     if -display_width_2 < snake.head.xcor() > display_width_2 \
             or -display_height_2 < snake.head.ycor() > display_height_2:
-        score_board.game_over()
-        is_game = False
+        score_board.reset_scoreboard()
+        snake.reset_snake()
+
     # Head collision
     for segment in snake.segments[1:]:
         if snake.head.distance(segment) < 10:
-            score_board.game_over()
-            is_game = False
+            score_board.reset_scoreboard()
+            snake.reset_snake()
 
 screen.exitonclick()

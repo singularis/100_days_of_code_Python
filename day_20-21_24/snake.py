@@ -15,6 +15,7 @@ class Snake:
         self.head = self.segments[0]
 
     def create_snake(self):
+        self.x = 0
         for segment in range(3):
             self.add_segment(segment)
 
@@ -54,4 +55,10 @@ class Snake:
         if self.head.heading() != UP:
             self.head.setheading(DOWN)
 
+    def reset_snake(self):
+        for seg in self.segments:
+            seg.goto(2000, 2000)
+        self.segments.clear()
+        self.create_snake()
+        self.head = self.segments[0]
 
