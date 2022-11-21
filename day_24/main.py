@@ -8,4 +8,4 @@ with open("./Input/Names/invited_names.txt") as names:
         file_name = "./Output/ReadyToSend/letter_for_" + name
         with open(file_name, mode="w") as ready_to_send:
             ready_to_send.write(replaced_text)
-
+            ready_to_send.write(replaced_text)
