@@ -30,6 +30,9 @@ while i < 50:
         screen.update()
         pass
     if answer_state == "Exit":
+        to_learn = [state_to_learn for state_to_learn in data["state"].values if state_to_learn not in answered]
+        to_learn = pd.DataFrame(to_learn, columns=["States to learn"])
+        to_learn.to_csv("to_learn.csv", index=False)
         break
     if answer_state in data["state"].values:
         x_cor = (data[data.state == answer_state].x.values[0])
@@ -40,10 +43,7 @@ while i < 50:
         state.goto(x_cor, y_cor)
         state.write(answer_state, True, align="center")
         answered.append(answer_state)
-        i = + 1
+        i =+ 1
+        print(i)
 
-to_learn = set(all_state) - set(answer_state)
-to_learn = pd.DataFrame(to_learn, columns=["States to learn"])
-to_learn.to_csv("to_learn.csv", index=False)
-print(to_learn)
 screen.exitonclick()
