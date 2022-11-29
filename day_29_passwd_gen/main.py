@@ -1,7 +1,7 @@
 from tkinter import *
 from tkinter import messagebox
-import pandas as pd
 import pyperclip
+import json
 from passwd_gen import gen_passwd
 
 FONT_NAME = "Courier"
@@ -22,6 +22,12 @@ def add_data_to_file():
     username = user_entry.get()
     password = password_entry.get()
     data = {"website": [website], "username": [username], "password": [password]}
+    new_data = {
+        website: {
+            "email": username,
+            "password": password,
+        }
+    }
     is_correct = True
     for item in data.values():
         if len(item[0]) == 0:
@@ -32,9 +38,11 @@ def add_data_to_file():
                                                               f"Email: {username}\nPassword:{password} \nIs it okay "
                                                               f"to save ?")
         if is_ok:
-            df = pd.DataFrame(data)
-            df.to_csv("./data.csv", mode='a')
-            user_entry.delete(0, 'end')
+            with open("data.json", "r") as data_file:
+                data_update = json.load(data_file)
+                data_update.update(new_data)
+            with open("data.json", "w") as data_file:
+                json.dump(data_update, data_file, indent=2)
             user_entry.insert(END, INIT_MAIL)
             password_entry.delete(0, 'end')
             website_entry.delete(0, 'end')
