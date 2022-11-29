@@ -15,6 +15,11 @@ def password_generate():
     pyperclip.copy(generated_password)
 
 
+def read_file():
+    with open("data.json", "r") as data_file:
+        return json.load(data_file)
+
+
 # ---------------------------- SAVE PASSWORD ------------------------------- #
 def add_data_to_file():
     incorrect_label.config(text="")
@@ -38,14 +43,36 @@ def add_data_to_file():
                                                               f"Email: {username}\nPassword:{password} \nIs it okay "
                                                               f"to save ?")
         if is_ok:
-            with open("data.json", "r") as data_file:
-                data_update = json.load(data_file)
+            try:
+                data_update = read_file()
                 data_update.update(new_data)
-            with open("data.json", "w") as data_file:
-                json.dump(data_update, data_file, indent=2)
-            user_entry.insert(END, INIT_MAIL)
+            except FileNotFoundError:
+                data_update = new_data
+                print(data_update)
+            finally:
+                with open("data.json", "w") as data_file:
+                    json.dump(data_update, data_file, indent=2)
+            user_entry.delete(0, 'end')
             password_entry.delete(0, 'end')
             website_entry.delete(0, 'end')
+
+
+# ---------------------------- FIND PASSWORD ------------------------------- #
+
+def find_password():
+    try:
+        data_payload = read_file()
+    except FileNotFoundError:
+        messagebox.showinfo(title="No data file found", message="No data file find, try to save something, "
+                                                                "or check file")
+    else:
+        site_to_search = website_entry.get()
+        if site_to_search in data_payload:
+            messagebox.showinfo(title="site_to_search", message="Login: '{}'\nPassword: '{}'"
+                                .format(data_payload[site_to_search]["email"],
+                                        data_payload[site_to_search]["password"]))
+        else:
+            messagebox.showinfo(title="Oops", message="No such entry found")
 
 
 # ---------------------------- UI SETUP ------------------------------- #
@@ -62,10 +89,13 @@ canvas.grid(column=1, row=0)
 website_label = Label(font=(FONT_NAME, 12, "italic"), text="Website")
 website_label.grid(column=0, row=1)
 
-website_entry = Entry(width=35)
+website_entry = Entry(width=21)
 website_entry.focus()
 website_entry.insert(END, string="test")
-website_entry.grid(column=1, row=1, columnspan=2)
+website_entry.grid(column=1, row=1)
+
+gen_passwd_btn = Button(text="Search", command=find_password, width=10, padx=0)
+gen_passwd_btn.grid(column=2, row=1)
 
 user_label = Label(font=(FONT_NAME, 12, "italic"), text="Email/Username")
 user_label.grid(column=0, row=2)

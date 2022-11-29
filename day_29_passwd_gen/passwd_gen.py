@@ -20,7 +20,3 @@ def gen_passwd():
     random.shuffle(password_list)
     password = ''.join(password_list)
     return password
-
-
-
-print(gen_passwd())
