@@ -1,15 +1,4 @@
-class A:
-
-    def __init__(self):
-        pass
-
-    def func1(self):
-        return 1
-
-    # def func2(self):
-    def func2():
-        return self.func1()
-
-
-x = A()
-print(x.func1())
+list1 = [i for i in range(1, 10)]
+print(list1)
+list2 = list1[-1:1:1]
+print(list2)
