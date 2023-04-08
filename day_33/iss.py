@@ -13,6 +13,8 @@ parameters = {
     "lng": MY_LONG,
     "formatted": 0,
 }
+
+
 def get_pos():
     response = requests.get(url="http://api.open-notify.org/iss-now.json")
     response.raise_for_status()
@@ -20,6 +22,7 @@ def get_pos():
     iss_latitude = float(data["iss_position"]["latitude"])
     iss_longitude = float(data["iss_position"]["longitude"])
     return iss_longitude, iss_latitude
+
 
 def send_mail(receiver, text):
     with smtplib.SMTP("smtp.gmail.com") as connection:
@@ -39,7 +42,6 @@ def get_sun():
 
 
 time_now = datetime.now()
-
 
 ticker = threading.Event()
 while not ticker.wait(WAIT_TIME_SECONDS):
