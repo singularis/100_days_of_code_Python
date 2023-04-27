@@ -1,5 +1,6 @@
 import requests
 import secret
+from datetime import datetime
 GRAPH_ID = "day38"
 is_register = True
 is_created = True
@@ -31,11 +32,17 @@ headers = {
 
 if not is_created:
     response = requests.post(url=graph_api, json=graphs_params, headers=headers)
-
+now = datetime.now()
 point_params = {
-    "date": "20230424",
+    "date": now.strftime("%Y%m%d"),
     "quantity": "12",
 }
-
 board_api = graph_api+ "/" + GRAPH_ID
-response = requests.post(url=board_api, json=point_params, headers=headers)
+if False:
+    response = requests.post(url=board_api, json=point_params, headers=headers)
+
+if None:
+    response = requests.put(url=board_api.point_paramsp["date"], json=point_params, headers=headers)
+
+if is_created:
+    response = requests.delete(url=board_api.point_paramsp["date"], headers=headers)
