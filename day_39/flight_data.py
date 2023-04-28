@@ -1,25 +1,25 @@
 import requests
 
 
-class DataManager:
+class IATAmanager:
     def __init__(self, url, header):
         self.header = header
         self.url = url
 
-    def get_data(self):
-        response = requests.get(url=self.url, headers=self.header)
-        response.raise_for_status()
-        return response.json()["prices"]
-
-    def put_date(self, city, iata, price):
+    def get_codes(self, city):
         payload = {
-            "prices": {
-                "City": city,
-                "IATA Code": iata,
-                "Lowest Price": price,
-            }
+            "term": city,
+            "locale": "en-US",
+            "limit": 10,
+            "active_only": True,
+            "location_types": "airport",
         }
-        response = requests.get(url=self.url, json=payload, headers=self.header)
+        header = {
+            "apikey": self.header,
+            "accept": "application/json"
+        }
+        url = self.url +"locations/query"
+        response = requests.get(url, params=payload, headers=header)
         response.raise_for_status()
-        return response
+        return response.json()["locations"][0]
 
