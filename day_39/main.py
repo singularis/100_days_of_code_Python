@@ -12,6 +12,9 @@ iata = flight_data.IATAmanager(url=secret.tequila_uri, header=secret.tequila_api
 flights = flight_search.Flights_manager(url=secret.tequila_uri, header=secret.tequila_api_key)
 dante = notification_manager.NotificationManager(email=secret.email, password=secret.password)
 sheet_payload = sheet.get_data()
+new_user = data_manager.NewUser()
+sheet.put_user(new_user.get_user())
+users = sheet.get_users()
 # Initial data check for new locations
 for row in sheet_payload:
     iata = row["iataCode"]
@@ -24,4 +27,6 @@ for row in sheet_payload:
     if lowest_price:
         if lowest_price < int(row["lowestPrice"]):
             sheet.put_price(lowest_price, row["id"])
-            dante.send_notification(receiver=secret.receiver, city=city, price=lowest_price)
+            for user in users:
+                print(user)
+                dante.send_notification(receiver=user["email"], city=city, price=lowest_price)
